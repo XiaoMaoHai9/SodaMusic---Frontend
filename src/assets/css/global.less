@@ -1,0 +1,57 @@
+// 基本变量
+// color -> 颜色预设
+@primary-color: #0075c2; // 全局主色
+@font-color-hover: #0075c2;  //  字体覆盖颜色
+@font-color-text-deep: #333336;
+@color-grey: #dcdfe6 ;
+
+// global-radius -> 全局圆角
+@global-radius: 15px;
+
+// 混合
+// 弹窗背景 -> 高斯莫斯 深色
+.pop-bk-style-b(){ 
+  background-color:rgba(64, 64, 64, 0.6);
+  backdrop-filter: saturate(150%) blur(10px);
+}
+
+// flex布局
+// 纵向
+.flex-col(@direction: column, @wrap: nowrap, @justify: space-between, @align: flex-start){
+  display: flex;
+  flex-wrap: @wrap;
+  flex-direction: @direction;
+  justify-content: @justify;
+  align-items: @align;
+}
+
+
+// 横向
+.flex-row(@direction: row, @wrap: nowrap, @justify: space-between, @align: center){
+  display: flex;
+  flex-wrap: @wrap;
+  flex-direction: @direction;
+  justify-content: @justify;
+  align-items: @align;
+}
+
+
+
+// 懒加载图片样式
+// 懒加载图片容器
+.lazy-img-container-mixins(@width, @height, @bgColor: @color-grey ){
+  width: @width;
+  height: @height;
+  line-height: @height;
+  background-color: @bgColor;
+  text-align: center;
+  font-size: 0;
+  overflow: hidden;
+}
+
+// 文本超出 -> ...显示
+.textover-ellipsis{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
