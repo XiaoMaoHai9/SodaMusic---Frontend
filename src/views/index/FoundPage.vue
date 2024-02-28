@@ -197,6 +197,7 @@ export default {
         歌单推荐：歌单
         独家策划：视频
         热碟推荐：专辑
+        新碟首发：专辑
         新歌首发：单曲
         热歌推荐：单曲
       */
@@ -229,7 +230,7 @@ export default {
         }).catch(error => {
           console.log(error)
         })
-      } else if (typeTitle === '热碟推荐') {
+      } else if (typeTitle === '热碟推荐' || typeTitle === '新碟首发') {
         this.getAlbumAllSongs({ id: id })
       } else if (typeTitle === '歌单推荐') {
         this.getListAllSongs({ id: id })
