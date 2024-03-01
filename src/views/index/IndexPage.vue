@@ -5,10 +5,12 @@
       <ul class='top-banner'>
         <li>
           <img class="web-logo" src="@/assets/images/logos/sodamusic.png" alt="logo" @click="routerGo('found')">
-          <span class="top-nav" :class="{'nav-checked': checkedPage === 'found'}" @click="routerGo('found')">发现音乐</span>
-          <!-- <li :class="{'nav-checked': checkedPage === 'mymusic'}"><span @click="routerGo('mymusic')">我的音乐</span></li> -->
-          <span class="top-nav" :class="{'nav-checked': checkedPage === 'myMicLib'}" @click="routerGo('myMicLib')">私人乐库</span>
-          <!-- <li :class="{'nav-checked': checkedPage === 'download'}"><span @click="routerGo('download')">我的下载</span></li> -->
+          <div class="top-nav-container" ref="topNav">
+            <span class="top-nav" @click="routerGo('found', '-')">发现音乐</span>
+            <!-- <li :class="{'nav-checked': checkedPage === 'mymusic'}"><span @click="routerGo('mymusic')">我的音乐</span></li> -->
+            <span class="top-nav" @click="routerGo('myMicLib', '+')">私人乐库</span>
+            <!-- <li :class="{'nav-checked': checkedPage === 'download'}"><span @click="routerGo('download')">我的下载</span></li> -->
+          </div>
         </li>
         <li>
           <search-bar></search-bar>
@@ -160,9 +162,19 @@ export default {
   methods: {
     ...mapMutations(['setUserInfo', 'changeLoginState', 'logout']),
 
+    // CSS获取DOM样式不同浏览器兼容性适配
+    getStyle (oElement, sName) {
+      return oElement.currentStyle ? oElement.currentStyle[sName] : getComputedStyle(oElement, null)[sName]
+    },
+
     // 导航栏选中后跳转路由
-    routerGo (arrive) {
+    routerGo (arrive, positionGo) {
       if (arrive !== this.$route.name) {
+        if (positionGo === '+') {
+          this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
+        } else {
+          this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) - 120 + 'px'
+        }
         this.$router.push(`/${arrive}`)
       }
     },
@@ -232,17 +244,24 @@ export default {
       vertical-align: middle;
       cursor: pointer;
     }
-
-    .top-nav{
+    .top-nav-container{
       display: inline-block;
       vertical-align: middle;
       height: 100px;
-      margin: 0 15px;
-      font-size: 22px;
-      cursor: pointer;
+      background: linear-gradient(90deg, rgb(0, 117, 194) 5px , rgb(188, 232, 239)) no-repeat 15px bottom;
+      background-size: 90px 4px;
+      transition: background .5s;
 
-      &:hover{
-        color: @font-color-hover;
+      .top-nav{
+        display: inline-block;
+        width: 90px;
+        margin: 0 15px;
+        font-size: 22px;
+        cursor: pointer;
+
+        &:hover{
+          color: @font-color-hover;
+        }
       }
     }
   }
