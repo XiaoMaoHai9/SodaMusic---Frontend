@@ -39,7 +39,6 @@ export default {
   position: relative;
   width: 180px;
   height: 250px;
-  border: 1px solid @color-grey;
   transition: .2s all;
   overflow: hidden;
 

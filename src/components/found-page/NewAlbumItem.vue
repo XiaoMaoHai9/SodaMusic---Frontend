@@ -1,7 +1,7 @@
 <template>
   <div class="new-album bs"  @mouseenter="getIsEnter('enter')" @mouseleave="getIsEnter('leave')">
     <div class="new-album-cover-container br">
-      <img class="album-cover lazy-img" v-lazy="data.imgUrl + '?param=90y90'" @click="playAlbum({id: data.id})">
+      <img class="album-cover lazy-img br" v-lazy="data.imgUrl + '?param=90y90'" @click="playAlbum({id: data.id})">
     </div>
     <div class="album-info">
       <span class="album-name">{{data.name}}</span>
@@ -59,6 +59,7 @@ export default {
   padding: 10px;
   border-radius: 14px;
   transition: .4s;
+  background-color: #fff;
 
   .new-album-cover-container{
     .lazy-img-container-mixins(90px, 90px);
@@ -67,6 +68,7 @@ export default {
     .album-cover{
       width: 90px;
       height: 90px;
+      border: 1px solid @color-grey;
       cursor: pointer;
     }
   }
@@ -112,7 +114,7 @@ export default {
 }
 
 .new-album:hover{
-  background-color: #FAFAFA;
+
   .album-info,.album-name, .singer-name{
     width: 80px;
   }

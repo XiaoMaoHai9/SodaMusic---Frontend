@@ -185,7 +185,7 @@ export default {
         }
 
         .play-btn{
-          font-size: 30px;
+          font-size: 28px;
           color: @primary-color;
         }
 
