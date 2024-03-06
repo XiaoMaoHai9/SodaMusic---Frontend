@@ -366,6 +366,7 @@ export default {
   right: 100px;
   z-index: 997;
   background-color: #FAFAFA;
+  .border-top-left();
 
   .audition-icon{
     position: absolute;
