@@ -1,8 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <index-page></index-page>
   </div>
 </template>
+
+<script>
+import IndexPage from './views/index/IndexPage.vue'
+
+export default {
+  components: { IndexPage },
+  data () {
+    return {
+    }
+  }
+}
+</script>
 
 <style lang="less" scoped>
 </style>

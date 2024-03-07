@@ -245,6 +245,12 @@ export default {
     this.getNewAlbum()
     this.getTopLists()
     this.getNewMv()
+  },
+  activated () {
+    console.log('actived 激活 → 进入页面')
+  },
+  deactivated () {
+    console.log('deactived 失活 → 离开页面')
   }
 }
 </script>

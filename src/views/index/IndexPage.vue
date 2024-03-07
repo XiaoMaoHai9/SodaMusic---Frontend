@@ -7,9 +7,7 @@
           <img class="web-logo" src="@/assets/images/logos/sodamusic.png" alt="logo" @click="routerGo('found')">
           <div class="top-nav-container" ref="topNav">
             <span class="top-nav" @click="routerGo('found', '-')">发现音乐</span>
-            <!-- <li :class="{'nav-checked': checkedPage === 'mymusic'}"><span @click="routerGo('mymusic')">我的音乐</span></li> -->
             <span class="top-nav" @click="routerGo('myMicLib', '+')">私人乐库</span>
-            <!-- <li :class="{'nav-checked': checkedPage === 'download'}"><span @click="routerGo('download')">我的下载</span></li> -->
           </div>
         </li>
         <li>
@@ -35,7 +33,10 @@
     </div>
     <!-- 主内容区 -> 路由跳转 -->
     <div class='container'>
-      <router-view></router-view>
+      <!-- 组件缓存 -->
+      <keep-alive :include='keepArr'>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <!-- 页脚 -->
     <div class='footer'>
@@ -122,7 +123,7 @@ export default {
   },
   data () {
     return {
-      checkedPage: 'found',
+      keepArr: ['FoundMusic', 'MusicLibPage'],
       isLoginShow: false
     }
   },
@@ -130,9 +131,6 @@ export default {
     ...mapState(['isLogin', 'userInfo', 'audioPlayer', 'videoPlayer'])
   },
   watch: {
-    $route (to, from) {
-      this.checkedPage = to.name
-    },
 
     isLogin (to, from) {
       if (this.isLogin === true) {
@@ -204,6 +202,8 @@ export default {
     }
   },
   created () {
+    this.$router.push('/found')
+
     if (window.sessionStorage.userInfo) {
       this.setUserInfo(JSON.parse(window.sessionStorage.getItem('userInfo')))
     }
