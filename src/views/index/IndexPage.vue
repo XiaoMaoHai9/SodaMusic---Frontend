@@ -4,10 +4,10 @@
     <div class='banner'>
       <ul class='top-banner'>
         <li>
-          <img class="web-logo" src="@/assets/images/logos/sodamusic.png" alt="logo" @click="routerGo('found')">
+          <img class="web-logo" src="@/assets/images/logos/sodamusic.png" alt="logo" @click="$router.push('/found')">
           <div class="top-nav-container" ref="topNav">
-            <span class="top-nav" @click="routerGo('found', '-')">发现音乐</span>
-            <span class="top-nav" @click="routerGo('myMicLib', '+')">私人乐库</span>
+            <span class="top-nav" ref="topNavFound" @click="$router.push('/found')">发现音乐</span>
+            <span class="top-nav" ref="topNavLib" @click="$router.push('/myMicLib')">私人乐库</span>
           </div>
         </li>
         <li>
@@ -35,7 +35,7 @@
     <div class='container'>
       <!-- 组件缓存 -->
       <keep-alive :include='keepArr'>
-        <router-view></router-view>
+        <router-view/>
       </keep-alive>
     </div>
     <!-- 页脚 -->
@@ -131,6 +131,22 @@ export default {
     ...mapState(['isLogin', 'userInfo', 'audioPlayer', 'videoPlayer'])
   },
   watch: {
+    // 监听路由跳转
+    $route (to, from) {
+      if (from.path === '/') {
+        this.$refs.topNavFound.style.color = '#0075c2'
+      } else if (to.path === '/myMicLib/libIndex') {
+        // 改变导航条位置
+        if (from.path !== '/found') return
+        this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
+        this.$refs.topNavFound.style.color = 'rgba(0, 0, 0, 0.65)'
+        this.$refs.topNavLib.style.color = '#0075c2'
+      } else if (to.path === '/found') {
+        this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) - 120 + 'px'
+        this.$refs.topNavLib.style.color = 'rgba(0, 0, 0, 0.65)'
+        this.$refs.topNavFound.style.color = '#0075c2'
+      }
+    },
 
     isLogin (to, from) {
       if (this.isLogin === true) {
@@ -165,18 +181,6 @@ export default {
       return oElement.currentStyle ? oElement.currentStyle[sName] : getComputedStyle(oElement, null)[sName]
     },
 
-    // 导航栏选中后跳转路由
-    routerGo (arrive, positionGo) {
-      if (arrive !== this.$route.name) {
-        if (positionGo === '+') {
-          this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
-        } else {
-          this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) - 120 + 'px'
-        }
-        this.$router.push(`/${arrive}`)
-      }
-    },
-
     // 退出登录
     async handleLogout () {
       // 请求登出
@@ -202,8 +206,7 @@ export default {
     }
   },
   created () {
-    this.$router.push('/found')
-
+    // this.$router.push('myMicLib', () => {}, () => {})
     if (window.sessionStorage.userInfo) {
       this.setUserInfo(JSON.parse(window.sessionStorage.getItem('userInfo')))
     }
@@ -291,6 +294,10 @@ export default {
   li:hover{
     background-color: #f2f5f6;
   }
+}
+
+.container{
+  width: 100%;
 }
 
 /* 可以设置不同的进入和离开动画 */

@@ -87,7 +87,7 @@ export default {
         }
 
         .to-play:hover{
-          font-size: 60px;
+          font-size: 55px;
         }
 
         .top-name{

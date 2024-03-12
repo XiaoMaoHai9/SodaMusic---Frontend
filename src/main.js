@@ -10,7 +10,7 @@ import '@/assets/css/common.css'
 import '@/assets/css/antd-personal.less'
 
 // 按需引入：babel-plugin-import会帮你转换为import Input from 'ant-design-vue/lib/input'
-import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel } from 'ant-design-vue'
+import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel, Menu, Pagination } from 'ant-design-vue'
 // import VueResource from 'vue-resource'
 import * as getApi from '@/apis/NeteaseCloudMusicApi/index'
 
@@ -31,6 +31,8 @@ Vue.use(Select)
 Vue.use(Avatar)
 Vue.use(Popover)
 Vue.use(Carousel)
+Vue.use(Menu)
+Vue.use(Pagination)
 
 // 图片懒加载
 // 导入加载、失败图片

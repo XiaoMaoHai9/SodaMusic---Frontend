@@ -1,5 +1,5 @@
 <template>
-  <div class="container br win-position">
+  <div class="login-container br win-position">
     <!-- 关闭按钮 -->
     <a-icon class="close-circle" type="close-circle" theme="twoTone" :style="{fontSize: '25px'}" twoToneColor="#0075c2" @click="closeLogin"/>
     <!-- 左侧图样 -->
@@ -195,7 +195,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.container{
+.login-container{
   display: flex;
   flex-direction: row;
   width: 900px;

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import NewAlbumItem from '@/components/found-page/NewAlbumItem.vue'
+import NewAlbumItem from '@/components/found-page/AlbumItem.vue'
 
 export default {
   name: 'NewAblum',
