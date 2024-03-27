@@ -1,7 +1,7 @@
 <template>
   <div class="search-bar-container" v-click-outside="closeGuessContent">
     <!-- 搜索框 -->
-    <a-input-search class="input-search" name="search" size="large" placeholder="音乐/MV/用户" @search="onSearch" v-model="inputValue" @input="debounceHandler" @focus="isShowGuess = searchList.length !== 0"/>
+    <a-input-search class="input-search" name="search" size="large" :allowClear="true" placeholder="音乐/MV/用户" @search="onSearch" v-model="inputValue" @input="debounceHandler" @focus="isShowGuess = searchList.length !== 0" autocomplete="off"/>
     <!-- 猜你想搜 -->
     <div class="guess-search-popover br bs mask-style-w" v-show="isShowGuess" >
       <!-- 展示列表 -->
@@ -128,8 +128,8 @@ export default {
   position: relative;
   display: inline-block;
   width: 250px;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   margin-right: 20px;
   vertical-align: middle;
 

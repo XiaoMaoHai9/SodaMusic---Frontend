@@ -7,10 +7,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLogin: false, // 登陆状态
-    loginModel: 'account', // 登录的模式
-    userInfo: { // 用户数据
-      avatarUrl: ''
+    platform: 'neteasecloud', // 登录平台
+    sodaAccount: { // soda 账户
+      loginFlag: false,
+      isLogin: false, // 登陆状态
+      userInfo: { // 用户数据
+        avatarUrl: ''
+      }
+    },
+    thirdParty: { // 第三方账户
+      isLogin: false, // 登陆状态
+      platform: 'neteasecloud', // 登录平台
+      loginModel: 'account', // 登录的模式
+      userInfo: { // 用户数据
+        avatarUrl: ''
+      }
     },
     audioPlayer: { // 音频播放器数据
       isStart: false, // 是否启动
@@ -49,29 +60,42 @@ export default new Vuex.Store({
   },
   mutations: {
     // 改变登录模式
-    checkLoginModel (state, model) {
-      state.loginModel = model
+    checkLoginModel (state) {
+      state.thirdParty.loginModel = state.thirdParty.loginModel === 'phone' ? 'account' : 'phone'
+    },
+
+    // 更新当前平台
+    updatePlatform (state, platformName) {
+      state.platform = platformName
     },
 
     // 设置用户信息
-    setUserInfo (state, value) {
-      state.userInfo = value
+    setUserInfo (state, { data, platform }) {
+      if (platform === 'sodamusic') state.sodaAccount.userInfo = data
+      if (platform === 'neteasecloud') state.thirdParty.userInfo = data
+    },
+
+    // 改变 soda 账户登录标识 -> true 为开启登录 false为关闭登录
+    changeLoginFlag (state, value) {
+      state.platform = value ? 'sodamusic' : 'neteasecloud'
+      state.sodaAccount.loginFlag = value
     },
 
     // 改变登录状态
-    changeLoginState (state, value) {
-      state.isLogin = value
+    changeLoginState (state, { data, platform }) {
+      if (platform === 'sodamusic') state.sodaAccount.isLogin = data
+      if (platform === 'neteasecloud') state.thirdParty.isLogin = data
     },
 
     // 退出登录
     logout (state) {
       this.commit('clearCookies')
       window.sessionStorage.clear()
-      state.userInfo = { avatarUrl: '' }
-      state.isLogin = false
+      state.thirdParty.userInfo = { avatarUrl: '' }
+      state.thirdParty.isLogin = false
     },
 
-    // 清楚本地cookie
+    // 清除本地cookie
     clearCookies () {
       const cookies = document.cookie.split('; ')
       for (let i = 0; i < cookies.length; i++) {

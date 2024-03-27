@@ -12,6 +12,12 @@ const routes = [
   // component: IndexPage,
   // redirect: '/found',
   // children: [
+
+  // 默认重定向
+  {
+    path: '/',
+    redirect: '/found'
+  },
   {
     name: 'FoundMusic',
     path: '/found',
@@ -24,11 +30,42 @@ const routes = [
   {
     name: 'MusicLibPage',
     path: '/myMicLib',
+    redirect: '/myMicLib/libIndex',
     // 路由懒加载 -> 分块为 group-lib
-    component: () => import(/* webpackChunkName: "group-lib" */'@/views/MyMusicLibPage.vue'),
+    component: () => import(/* webpackChunkName: "group-lib" */'@/views/index/MyMusicLibPage.vue'),
     meta: {
       keepAlive: true
-    }
+    },
+    // 二级路由
+    children: [
+      {
+        name: 'LibIndexPage',
+        path: 'libIndex',
+        // 路由懒加载 -> 分块为 group-lib
+        component: () => import(/* webpackChunkName: "group-lib-index" */'@/views/musicLib/LibIndexPage.vue'),
+        meta: {
+          keepAlive: true
+        }
+      },
+      {
+        name: 'MicManagePage',
+        path: 'micMangage',
+        // 路由懒加载 -> 分块为 group-lib
+        component: () => import(/* webpackChunkName: "group-lib-index" */'@/views/musicLib/MicManagePage.vue'),
+        meta: {
+          keepAlive: true
+        }
+      },
+      {
+        name: 'SettingPage',
+        path: 'setting',
+        // 路由懒加载 -> 分块为 group-lib
+        component: () => import(/* webpackChunkName: "group-lib-index" */'@/views/musicLib/SettingPage.vue'),
+        meta: {
+          keepAlive: true
+        }
+      }
+    ]
   },
   {
     name: 'download',

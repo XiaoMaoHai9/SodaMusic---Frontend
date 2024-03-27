@@ -3,8 +3,8 @@
   <div class="mv-lists-main">
     <ul class="mv-lists-outer">
       <li class="mv-item br bs" v-for="item in data" :key="item.id">
-        <div class="mv-cover-mask br mask-style-b" @click="getUrl(item.id)">
-          <a-icon type="caret-right" class="play-icon" title="播放"/>
+        <div class="mv-cover-mask mask-style-b" @click="getUrl(item.id)">
+          <a-icon type="play-circle" class="play-icon" title="播放" theme='filled'/>
         </div>
         <div class="mv-cover-container">
           <img class="mv-cover" v-lazy="item.cover + '?param=360y240'">
@@ -76,7 +76,7 @@ export default {
             transition: .2s;
 
             &:hover{
-              font-size: 50px;
+              font-size: 45px;
             }
           }
         }
@@ -88,6 +88,7 @@ export default {
           .mv-cover{
             width: 180px;
             height: 120px;
+            transition: .3s transform;
           }
         }
 
@@ -130,6 +131,10 @@ export default {
       .mv-item:hover{
           .mv-cover-mask{
             opacity: 1;
+          }
+
+          .mv-cover{
+            transform: scale(1.1);
           }
 
           .mv-info{

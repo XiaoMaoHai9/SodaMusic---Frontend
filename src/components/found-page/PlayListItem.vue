@@ -4,7 +4,9 @@
     <!-- 播放量 -->
     <span v-if="data.playCount" class="play-count mask-style-b"><a-icon type="caret-right" :style="{ marginRight: '2px'}"/>{{data.playCount}}</span>
     <!-- 封面蒙版 -->
-    <div class="cover-mask mask-style-b" @click="getPlayListAllSongs(data.id)"></div>
+    <div class="cover-mask mask-style-b" @click="getPlayListAllSongs(data.id)">
+      <a-icon type="play-circle" class="play-icon" title="播放" theme="filled"/>
+    </div>
     <!-- 封面 -->
     <div class="cover-container">
       <img class="list-cover" v-lazy="data.imgUrl + '?param=180y180'">
@@ -53,7 +55,7 @@ export default {
     padding: 0 10px 0 8px;
     text-align: center;
     border-radius: 20px;
-    z-index: 2;
+    z-index: 1;
     color: #fff;
   }
 
@@ -62,10 +64,23 @@ export default {
     position: absolute;
     width: 180px;
     height: 180px;
-    z-index: 1;
+    line-height: 180px;
+    text-align: center;
+    z-index: 3;
     opacity: 0;
     transition: .3s all;
     cursor: pointer;
+
+    .play-icon{
+      font-size: 60px;
+      color: #fff;
+      vertical-align: middle;
+      transition: .2s;
+
+      &:hover{
+        font-size: 65px;
+      }
+    }
   }
 
   .cover-container{
@@ -106,7 +121,7 @@ export default {
 .play-list:hover{
 
   .cover-mask{
-    opacity: .4;
+    opacity: 1;
   }
 
   .list-cover{

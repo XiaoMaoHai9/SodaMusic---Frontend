@@ -81,7 +81,7 @@ export default {
     }
   },
   watch: {
-    isLogin () {
+    'thirdParty.isLogin' () {
       this.getPersonalized()
     },
 
@@ -96,14 +96,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isLogin'])
+    ...mapState(['thirdParty'])
   },
   methods: {
     ...mapActions(['checkMusic', 'getListAllSongs', 'getAlbumAllSongs', 'getMvUrl']),
     // 获取轮播图
     async getBanner () {
       try {
-        const { data: res } = await this.$http.foundPage.getBanner()
+        const { data: res } = await this.$http.neteasecloudApi.foundPage.getBanner()
 
         if (res.code !== 200) {
           return this.$message.error('数据请求失败')
@@ -119,12 +119,12 @@ export default {
     async getPersonalized () {
       let res = null
       // 已登录
-      if (this.$store.state.isLogin) {
-        res = await this.$http.foundPage.getRecommendRes()
+      if (this.$store.state.thirdParty.isLogin) {
+        res = await this.$http.neteasecloudApi.foundPage.getRecommendRes()
         const newRes = res.data.recommend.map(item => cleanPlaylist(item))
         this.playList = changePlayCount(newRes)
       } else { // 未登录
-        res = await this.$http.foundPage.getPersonalized({ limit: 13 })
+        res = await this.$http.neteasecloudApi.foundPage.getPersonalized({ limit: 13 })
         const newRes = res.data.result.map(item => cleanPlaylist(item))
         this.playList = changePlayCount(newRes)
       }
@@ -135,7 +135,7 @@ export default {
       const list1 = []
       const list2 = []
       // 请求新碟上架列表
-      const { data } = await this.$http.foundPage.getNewAlbum({ area: 'ALL', limit: '18' })
+      const { data } = await this.$http.neteasecloudApi.foundPage.getNewAlbum({ area: 'ALL', limit: '18' })
       // 清洗列表数据
       const newData = data.albums.map(item => cleanAlbumForWY(item))
       // 列表分栏
@@ -152,7 +152,7 @@ export default {
 
     // 获取所有榜单
     async getTopLists () {
-      const { data } = await this.$http.foundPage.getTopList()
+      const { data } = await this.$http.neteasecloudApi.foundPage.getTopList()
       // 数据整理 -> 取前5作为展示
       data.list.slice(0, 5).forEach(item => {
         this.topLists.lists.push({
@@ -171,13 +171,13 @@ export default {
 
     // 获取歌单所有歌曲
     async getPlayList (value) {
-      const { data } = await this.$http.foundPage.getPlayList({ id: value, limit: '3', offset: '0' })
+      const { data } = await this.$http.neteasecloudApi.foundPage.getPlayList({ id: value, limit: '3', offset: '0' })
       return data.songs.map(item => cleanSongForWY(item))
     },
 
     // 获取最新MV
     async getNewMv () {
-      const { data } = await this.$http.foundPage.getNewMv({ area: 'all', limit: '10' })
+      const { data } = await this.$http.neteasecloudApi.foundPage.getNewMv({ area: 'all', limit: '10' })
       changePlayCount(data.data)
       this.mvLists = data.data
     },
@@ -247,10 +247,8 @@ export default {
     this.getNewMv()
   },
   activated () {
-    console.log('actived 激活 → 进入页面')
   },
   deactivated () {
-    console.log('deactived 失活 → 离开页面')
   }
 }
 </script>
