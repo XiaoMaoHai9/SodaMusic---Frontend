@@ -12,7 +12,7 @@
         </li>
         <li>
           <search-bar></search-bar>
-          <a-button type="primary" :style="{ width: '80px', height: '40px', fontSize: '15px', verticalAlign: 'middle'}" @click="isLoginShow = true" v-if="!isLogin">登录</a-button>
+          <a-button type="primary" size="large" :style="{ width: '80px', fontSize: '15px', verticalAlign: 'middle'}" @click="loginFlag = true" v-if="!thirdParty.isLogin">登录</a-button>
           <a-popover trigger="hover">
             <template slot="content">
               <ul class="bannner-popover-ul">
@@ -26,7 +26,7 @@
                 </li>
               </ul>
             </template>
-            <a-avatar :size="40" :src="userInfo.avatarUrl" v-show="isLogin"/>
+            <a-avatar :size="40" :src="thirdParty.userInfo.avatarUrl" v-show="thirdParty.isLogin"/>
           </a-popover>
         </li>
       </ul>
@@ -34,7 +34,7 @@
     <!-- 主内容区 -> 路由跳转 -->
     <div class='container'>
       <!-- 组件缓存 -->
-      <keep-alive :include='keepArr'>
+      <keep-alive :include="keepArr">
         <router-view/>
       </keep-alive>
     </div>
@@ -46,17 +46,17 @@
               <li class="info-title">歌源链接</li>
               <li>
                 <a class="info-link" href="https://music.163.com/">网易云音乐
-                  <img src="@/assets/images/logos/neteasecloud.svg" alt="">
+                  <img src="@/assets/images/logos/neteasecloud-icon.svg" alt="">
                 </a>
               </li>
               <li>
                 <a class="info-link" href="https://y.qq.com/">QQ音乐
-                  <img src="@/assets/images/logos/QQmusic.svg" alt="">
+                  <img src="@/assets/images/logos/QQmusic-icon.svg" alt="">
                 </a>
               </li>
               <li>
                 <a class="info-link" href="https://www.kugou.com/">酷狗音乐
-                  <img src="@/assets/images/logos/kugoumusic.svg" alt="">
+                  <img src="@/assets/images/logos/kugoumusic-icon.svg" alt="">
                 </a>
               </li>
             </ul>
@@ -66,17 +66,17 @@
               <li class="info-title">与我联系</li>
               <li>
                 <a class="info-link"  href="https://github.com/XiaoMaoHai9">Github
-                  <img src="@/assets/images/logos/Github.svg" alt="">
+                  <img src="@/assets/images/logos/Github-icon.svg" alt="">
                 </a>
               </li>
               <li>
                 <a class="info-link" href="https://space.bilibili.com/66681654?spm_id_from=333.337.0.0">Blibili
-                  <img src="@/assets/images/logos/Bilibili.svg" alt="">
+                  <img src="@/assets/images/logos/Bilibili-icon.svg" alt="">
                 </a>
               </li>
               <li>
                 <a class="info-link" href="https://weibo.com/u/5125621060">Weibo
-                  <img src="@/assets/images/logos/Weibo.svg" alt="">
+                  <img src="@/assets/images/logos/Weibo-icon.svg" alt="">
                 </a>
               </li>
             </ul>
@@ -90,9 +90,13 @@
           </div>
       </div>
     </div>
-    <!-- 登录界面 -->
+    <!-- 登录卡片 -->
     <transition name="mask-fade">
-      <login-window v-if="isLoginShow" @openWindow="openWindow()"></login-window>
+      <login-window v-if="loginFlag" @closeWindow="closeWindow()" @goRegister="goNewWindow('register')"></login-window>
+    </transition>
+    <!-- 注册卡片 -->
+    <transition name="mask-fade">
+      <register-card v-if="registerFlag" @closeWindow="closeWindow()" @goLogin="goNewWindow('login')"></register-card>
     </transition>
     <!-- 音频播放器 -->
     <audio-player  v-if="audioPlayer.isStart"></audio-player>
@@ -101,14 +105,15 @@
       <video-player v-if="videoPlayer.isStart"></video-player>
     </transition>
     <!-- 模糊背景蒙版 -->
-    <div class="win-bk-mask mask-style-b" v-if="isLoginShow || videoPlayer.isStart" @click="openWindow()">
+    <div class="win-bk-mask mask-style-b" v-if="loginFlag || registerFlag || videoPlayer.isStart" @click="openWindow()">
     </div>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import LoginWindow from '@/components/common/LoginWindow.vue'
+import LoginWindow from '@/components/common/LoginCard.vue'
+import RegisterCard from '@/components/common/RegisterCard.vue'
 import AudioPlayer from '@/components/common/AudioPlayer.vue'
 import VideoPlayer from '@/components/common/VideoPlayer.vue'
 import SearchBar from '@/components/common/SearchBar.vue'
@@ -119,42 +124,46 @@ export default {
     LoginWindow,
     AudioPlayer,
     VideoPlayer,
-    SearchBar
+    SearchBar,
+    RegisterCard
   },
   data () {
     return {
       keepArr: ['FoundMusic', 'MusicLibPage'],
-      isLoginShow: false
+      loginFlag: false,
+      registerFlag: false
     }
   },
   computed: {
-    ...mapState(['isLogin', 'userInfo', 'audioPlayer', 'videoPlayer'])
+    ...mapState(['thirdParty', 'sodaAccount', 'audioPlayer', 'videoPlayer'])
   },
   watch: {
     // 监听路由跳转
     $route (to, from) {
-      if (from.path === '/') {
+      console.log(from.path)
+      console.log(to.path)
+      if (from.path === '/' && to.path === '/myMicLib/libIndex') {
+        this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
+        this.$refs.topNavLib.style.color = '#0075c2'
+      } else if (from.path === '/' && to.path === '/found') {
         this.$refs.topNavFound.style.color = '#0075c2'
-      } else if (to.path === '/myMicLib/libIndex') {
+      } else if (from.path === '/found' && to.path === '/myMicLib/libIndex') {
         // 改变导航条位置
-        if (from.path !== '/found') return
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
         this.$refs.topNavFound.style.color = 'rgba(0, 0, 0, 0.65)'
         this.$refs.topNavLib.style.color = '#0075c2'
-      } else if (to.path === '/found') {
+      } else if (from.path === '/myMicLib/libIndex' && to.path === '/found') {
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) - 120 + 'px'
         this.$refs.topNavLib.style.color = 'rgba(0, 0, 0, 0.65)'
         this.$refs.topNavFound.style.color = '#0075c2'
       }
     },
 
-    isLogin (to, from) {
-      if (this.isLogin === true) {
-        this.isLoginShow = !this.isLogin
-      }
+    'sodaAccount.loginFlag' (newValue, oldValue) {
+      this.loginFlag = newValue
     },
 
-    isLoginShow (newValue, oldValue) {
+    loginFlag (newValue, oldValue) {
       // 切换禁止滚动的类
       if (newValue) {
         document.body.classList.add('no-scroll')
@@ -184,7 +193,7 @@ export default {
     // 退出登录
     async handleLogout () {
       // 请求登出
-      const { data } = await this.$http.login.logout()
+      const { data } = await this.$http.neteasecloudApi.login.logout()
       // 成功后 -> 执行本地退出操作
       if (data.code === 200) {
         this.logout()
@@ -196,26 +205,25 @@ export default {
     },
 
     // 关闭窗口
-    openWindow () {
+    closeWindow () {
       // 关闭登录窗口
-      if (this.isLoginShow) this.isLoginShow = false
+      if (this.loginFlag) this.loginFlag = false
+      // 关闭注册窗口
+      if (this.registerFlag) this.registerFlag = false
       // 关闭MV窗口
       if (this.videoPlayer.isStart) {
         this.$store.commit('changeVideoState', false)
       }
+    },
+
+    // 前往新窗口
+    goNewWindow (value) {
+      this.loginFlag = value === 'login'
+      this.registerFlag = value === 'register'
     }
   },
-  created () {
-    // this.$router.push('myMicLib', () => {}, () => {})
-    if (window.sessionStorage.userInfo) {
-      this.setUserInfo(JSON.parse(window.sessionStorage.getItem('userInfo')))
-    }
-    if (window.sessionStorage.isLogin) {
-      this.changeLoginState(window.sessionStorage.getItem('isLogin'))
-    }
-  },
-  mounted () {
-  }
+  created () {},
+  mounted () {}
 }
 </script>
 

@@ -10,9 +10,36 @@ import '@/assets/css/common.css'
 import '@/assets/css/antd-personal.less'
 
 // 按需引入：babel-plugin-import会帮你转换为import Input from 'ant-design-vue/lib/input'
-import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel, Menu, Pagination } from 'ant-design-vue'
+import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel, Menu, Pagination, Upload } from 'ant-design-vue'
 // import VueResource from 'vue-resource'
-import * as getApi from '@/apis/NeteaseCloudMusicApi/index'
+import * as neteasecloudApi from '@/apis/NeteaseCloudMusicApi/index'
+import * as sodamusicApi from '@/apis/SodaMusicApi/index'
+
+// 读取本地信息 -> 进行存储
+if (window.sessionStorage.isLogin_thirdPart) {
+  store.commit('changeLoginState', { data: window.sessionStorage.getItem('isLogin_thirdPart'), platform: 'neteasecloud' })
+}
+if (window.sessionStorage.userInfo_neteasecloud) {
+  store.commit('setUserInfo', { data: JSON.parse(window.sessionStorage.getItem('userInfo_neteasecloud')), platform: 'neteasecloud' })
+}
+if (window.localStorage.isLogin_sodamusic) {
+  store.commit('changeLoginState', { data: window.localStorage.getItem('isLogin_sodamusic'), platform: 'sodamusic' })
+}
+if (window.localStorage.userInfo_sodamusic) {
+  store.commit('setUserInfo', { data: JSON.parse(window.localStorage.getItem('userInfo_sodamusic')), platform: 'sodamusic' })
+}
+
+// 路由全局前置守卫 -> 进行路由拦截
+router.beforeEach((to, from, next) => {
+  if (to.name === 'LibIndexPage' && !store.state.sodaAccount.isLogin) {
+    next({ path: '/found' })
+    // 开启登录窗口
+    store.commit('changeLoginFlag', true)
+    message.warn('请登录苏打账号！')
+  } else {
+    next()
+  }
+})
 
 Vue.config.productionTip = false
 Vue.prototype.$message = message
@@ -33,6 +60,7 @@ Vue.use(Popover)
 Vue.use(Carousel)
 Vue.use(Menu)
 Vue.use(Pagination)
+Vue.use(Upload)
 
 // 图片懒加载
 // 导入加载、失败图片
@@ -48,7 +76,10 @@ Vue.use(VueLazyload, {
 })
 
 // Vue.use(VueResource)
-Vue.prototype.$http = getApi
+Vue.prototype.$http = {
+  neteasecloudApi,
+  sodamusicApi
+}
 
 new Vue({
   router,

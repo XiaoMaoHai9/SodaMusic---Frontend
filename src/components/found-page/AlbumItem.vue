@@ -1,10 +1,10 @@
 <template>
   <div class="album-iten bs">
-    <div class="album-cover-container br">
+    <div class="album-cover-container br" @click="playAlbum({id: data.id})">
       <div class="cover-mask mask-style-b">
         <a-icon type="play-circle" class="play-icon" title="播放" theme="filled"/>
       </div>
-      <img class="album-cover lazy-img" v-lazy="data.imgUrl + '?param=90y90'" @click="playAlbum({id: data.id})">
+      <img class="album-cover lazy-img" v-lazy="data.imgUrl + '?param=90y90'">
     </div>
     <div class="album-info">
       <span class="album-name">{{data.name}}</span>
