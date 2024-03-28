@@ -17,6 +17,9 @@
         <a-menu-item key="3">
           <a-icon type="setting" /><span>设置</span>
         </a-menu-item>
+        <a-menu-item key="4" @click="confirm">
+          <a-icon type="logout" /><span>退出</span>
+        </a-menu-item>
       </a-menu>
     <keep-alive :include='keepArr'>
       <router-view/>
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 export default {
   name: 'MusicLibPage',
   data () {
@@ -43,6 +47,8 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['logout']),
+
     handleClick (e) {
       if (e.key === '1') {
         this.$router.push('/myMicLib')
@@ -50,6 +56,10 @@ export default {
         this.$router.push('/myMicLib/micMangage')
       } else if (e.key === '3') {
         this.$router.push('/myMicLib/setting')
+      } else if (e.key === '4') {
+        if (this.$route.path === '/myMicLib/libIndex') e.key = '1'
+        if (this.$route.path === '/myMicLib/micMangage') e.key = '2'
+        if (this.$route.path === '/myMicLib/setting') e.key = '3'
       }
     },
     titleClick (e) {
@@ -62,9 +72,33 @@ export default {
     // 匹配导航菜单的显示模式
     matchMenuMode (mediaList) {
       this.menuMode = mediaList.matches ? 'horizontal' : 'inline'
+    },
+
+    // 退出确认弹窗
+    confirm () {
+      const _this = this
+      this.$confirm({
+        title: '确认退出',
+        okText: '确认',
+        cancelText: '取消',
+        onOk () {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              // 账户数据处理
+              _this.logout('sodamusic')
+              // 跳转到发现页
+              _this.$router.push('/found')
+              _this.$message.success('退出成功！')
+              resolve()
+            }, 200)
+          }).catch(() => console.log('Oops errors!'))
+        },
+        onCancel () {}
+      })
     }
   },
   created () {
+    if (this.$route.path !== '/myMicLib/libIndex') this.$router.push('/myMicLib/libIndex')
   },
   mounted () {
     const mediaList = window.matchMedia('(max-width: 768px)')
@@ -91,6 +125,7 @@ export default {
 .ant-menu{
   width: 30%;
   max-width: 400px;
+  overflow: hidden;
 
   .ant-menu-item{
     height: 60px;

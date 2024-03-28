@@ -88,11 +88,18 @@ export default new Vuex.Store({
     },
 
     // 退出登录
-    logout (state) {
-      this.commit('clearCookies')
-      window.sessionStorage.clear()
-      state.thirdParty.userInfo = { avatarUrl: '' }
-      state.thirdParty.isLogin = false
+    logout (state, platform) {
+      if (platform === 'sodamusic') {
+        window.localStorage.clear()
+        state.sodaAccount.userInfo = {}
+        state.sodaAccount.isLogin = false
+      }
+      if (platform === 'neteasecloud') {
+        this.commit('clearCookies')
+        window.sessionStorage.clear()
+        state.thirdParty.userInfo = { avatarUrl: '' }
+        state.thirdParty.isLogin = false
+      }
     },
 
     // 清除本地cookie

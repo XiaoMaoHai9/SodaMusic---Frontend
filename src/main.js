@@ -10,7 +10,7 @@ import '@/assets/css/common.css'
 import '@/assets/css/antd-personal.less'
 
 // 按需引入：babel-plugin-import会帮你转换为import Input from 'ant-design-vue/lib/input'
-import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel, Menu, Pagination, Upload } from 'ant-design-vue'
+import { Input, Button, Icon, Select, message, Avatar, Popover, Carousel, Menu, Pagination, Upload, Modal } from 'ant-design-vue'
 // import VueResource from 'vue-resource'
 import * as neteasecloudApi from '@/apis/NeteaseCloudMusicApi/index'
 import * as sodamusicApi from '@/apis/SodaMusicApi/index'
@@ -43,6 +43,7 @@ router.beforeEach((to, from, next) => {
 
 Vue.config.productionTip = false
 Vue.prototype.$message = message
+Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$video = videojs
 
 message.config({

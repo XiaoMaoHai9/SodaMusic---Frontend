@@ -22,7 +22,7 @@
                 </li>
                 <li class="br" @click="handleLogout">
                   <span>
-                    <a-icon type="poweroff" :style="{ marginRight: '7px'}"/>退出登录</span>
+                    <a-icon type="logout" :style="{ marginRight: '7px'}"/>退出登录</span>
                 </li>
               </ul>
             </template>
@@ -140,8 +140,6 @@ export default {
   watch: {
     // 监听路由跳转
     $route (to, from) {
-      console.log(from.path)
-      console.log(to.path)
       if (from.path === '/' && to.path === '/myMicLib/libIndex') {
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
         this.$refs.topNavLib.style.color = '#0075c2'
@@ -152,7 +150,7 @@ export default {
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
         this.$refs.topNavFound.style.color = 'rgba(0, 0, 0, 0.65)'
         this.$refs.topNavLib.style.color = '#0075c2'
-      } else if (from.path === '/myMicLib/libIndex' && to.path === '/found') {
+      } else if (to.path === '/found') {
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) - 120 + 'px'
         this.$refs.topNavLib.style.color = 'rgba(0, 0, 0, 0.65)'
         this.$refs.topNavFound.style.color = '#0075c2'
@@ -222,7 +220,9 @@ export default {
       this.registerFlag = value === 'register'
     }
   },
-  created () {},
+  created () {
+    this.loginFlag = this.$store.state.sodaAccount.loginFlag
+  },
   mounted () {}
 }
 </script>
