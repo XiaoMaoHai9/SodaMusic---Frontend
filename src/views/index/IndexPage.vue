@@ -194,7 +194,7 @@ export default {
       const { data } = await this.$http.neteasecloudApi.login.logout()
       // 成功后 -> 执行本地退出操作
       if (data.code === 200) {
-        this.logout()
+        this.logout('neteasecloud')
         this.$message.success('成功退出!')
       }
 

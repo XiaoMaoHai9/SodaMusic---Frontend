@@ -201,7 +201,7 @@ export default {
         // 发送请求
         const { data: res } = await this.$http.neteasecloudApi.login.getUserInfo({ uid: id })
         window.sessionStorage.setItem('userInfo_neteasecloud', JSON.stringify(res.profile))
-        this.setUserInfo(res.profile)
+        this.setUserInfo(res.profile, 'neteasecloud')
       }
     }
   }
