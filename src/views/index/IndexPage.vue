@@ -32,7 +32,7 @@
       </ul>
     </div>
     <!-- 主内容区 -> 路由跳转 -->
-    <div class='container'>
+    <div class='main-container'>
       <!-- 组件缓存 -->
       <keep-alive :include="keepArr">
         <router-view/>
@@ -105,7 +105,7 @@
       <video-player v-if="videoPlayer.isStart"></video-player>
     </transition>
     <!-- 模糊背景蒙版 -->
-    <div class="win-bk-mask mask-style-b" v-if="loginFlag || registerFlag || videoPlayer.isStart" @click="openWindow()">
+    <div class="win-bk-mask mask-style-b" v-if="loginFlag || registerFlag || videoPlayer.isStart" @click="closeWindow()">
     </div>
   </div>
 </template>
@@ -304,7 +304,7 @@ export default {
   }
 }
 
-.container{
+.main-container{
   width: 100%;
 }
 

@@ -41,9 +41,9 @@ export default {
   data () {
     return {
       loginForm: {
-        phone: '17364493915', // 手机号
+        phone: '15375692553', // 手机号
         captcha: '', // 短信验证码
-        password: '111111ACc' // 密码
+        password: 'GototheMars2001W' // 密码
       },
       codeCountdown: 60,
       countFlag: false,
@@ -193,7 +193,7 @@ export default {
         // 发送请求
         const { data } = await this.$http.sodamusicApi.getUserInfo()
         if (data.code !== 200) return this.$message.error('获取用户信息失败，请重新登录')
-        this.setUserInfo(data.data)
+        this.setUserInfo({ data: data.data, platform: 'sodamusic' })
         window.localStorage.setItem('userInfo_sodamusic', JSON.stringify(data.data))
         return data.data
         // 网易云
@@ -201,7 +201,7 @@ export default {
         // 发送请求
         const { data: res } = await this.$http.neteasecloudApi.login.getUserInfo({ uid: id })
         window.sessionStorage.setItem('userInfo_neteasecloud', JSON.stringify(res.profile))
-        this.setUserInfo(res.profile, 'neteasecloud')
+        this.setUserInfo({ data: res.profile, platform: 'neteasecloud' })
       }
     }
   }

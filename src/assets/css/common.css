@@ -60,7 +60,14 @@ body, html {
 
 /* 悬浮窗口 */
 /* 窗口定位 -> 垂直居中视口 */
-.win-position{ position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999; overflow: hidden; }
+.win-position{ 
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 999; 
+  overflow: hidden; 
+}
 /* 窗口背景毛玻璃蒙版 */
 .win-bk-mask{
   position: fixed;
