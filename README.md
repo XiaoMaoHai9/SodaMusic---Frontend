@@ -5,14 +5,14 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 项目运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 搜索接口使用前置条件
 ```
-npm run build
+[在线搜索接口](https://github.com/GitHub-ZC/wp_MusicApi)
 ```
 
 ### Lints and fixes files
