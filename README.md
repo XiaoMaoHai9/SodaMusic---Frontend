@@ -12,7 +12,7 @@ npm run serve
 
 ### 发现音乐页在线资源实现前置条件
 ```
-[在线资源接口](https://github.com/GitHub-ZC/wp_MusicApi)
+[在线资源接口](https://github.com/Binaryify/NeteaseCloudMusicApi)
 ```
 
 ### 搜索接口使用前置条件
