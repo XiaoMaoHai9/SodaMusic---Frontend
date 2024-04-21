@@ -5,20 +5,17 @@
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 项目运行
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 发现音乐页在线资源实现前置条件
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+[在线资源接口](https://github.com/Binaryify/NeteaseCloudMusicApi)
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 搜索接口使用前置条件
+```
+[在线搜索接口](https://github.com/GitHub-ZC/wp_MusicApi)
+```
