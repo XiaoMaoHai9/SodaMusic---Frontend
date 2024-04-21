@@ -141,7 +141,7 @@ export default {
     position: absolute;
     width: 250px;
     padding: 15px 15px 0 15px;
-    top: 50px;
+    top: 60px;
     border: 1px solid @color-grey;
     z-index: 10;
 

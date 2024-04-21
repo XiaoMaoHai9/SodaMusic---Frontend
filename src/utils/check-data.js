@@ -37,7 +37,7 @@ function checkPwd (password) {
   return new ReturnObj(true)
 }
 
-// 检查密码
+// 检查验证码
 function checkCaptcha (captcha) {
   if (captcha === '') return new ReturnObj(false, '请填写您的验证码！')
   else if (!CAPTCHA_RE.test(captcha)) return new ReturnObj(false, '验证码格式不正确！')

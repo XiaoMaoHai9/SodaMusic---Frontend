@@ -1,18 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// import IndexPage from '@/views/index/IndexPage.vue'
-
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  // path: '/',
-  // // 路由懒加载 -> 分块为 group-index
-  // component: IndexPage,
-  // redirect: '/found',
-  // children: [
-
   // 默认重定向
   {
     path: '/',

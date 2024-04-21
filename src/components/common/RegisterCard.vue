@@ -113,11 +113,12 @@ export default {
         this.$message.error(checkPwdRes.msg)
         return
       }
+
+      if (this.regForm.rePassword === '') return this.$message.error('请再次输入密码！')
+
       // 两次密码对比
-      if (this.regForm.password !== this.regForm.rePassword) {
-        this.$message.error('两次密码不一致')
-        return
-      }
+      if (this.regForm.password !== this.regForm.rePassword) return this.$message.error('两次密码不一致')
+
       // 提交注册请求
       const res = await this.$http.sodamusicApi.register(this.regForm)
       // const res = { data: { code: '200', msg: '登陆成功' } }

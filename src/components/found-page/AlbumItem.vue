@@ -4,15 +4,14 @@
       <div class="cover-mask mask-style-b">
         <a-icon type="play-circle" class="play-icon" title="播放" theme="filled"/>
       </div>
-      <img class="album-cover lazy-img" v-lazy="data.imgUrl + '?param=90y90'">
+      <img class="album-cover lazy-img" v-lazy="data.imgUrl || data.cover_url + '?param=90y90'">
     </div>
     <div class="album-info">
-      <span class="album-name">{{data.name}}</span>
+      <span class="album-name">{{data.name || data.song_name}}</span>
       <span class="singer-name">{{data.singer.join(' / ')}}</span>
     </div>
     <div class="album-tools">
-      <a-icon class="tools-icon" type="star" :style="{fontSize: '25px'}"/>
-      <a-icon class="tools-icon" type="cloud-download" :style="{fontSize: '25px', margin: '0 15px'} "/>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -127,7 +126,7 @@ export default {
   .album-tools{
     position: absolute;
     right: 0;
-    width: 105px;
+    // width: 105px;
     height: 90px;
     line-height: 90px;
     text-align: center;

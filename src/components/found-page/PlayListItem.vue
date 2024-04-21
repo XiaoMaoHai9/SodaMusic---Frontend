@@ -9,6 +9,7 @@
     </div>
     <!-- 封面 -->
     <div class="cover-container">
+            <!-- 通过v-lazy属性来设置图片的url地址 -->
       <img class="list-cover" v-lazy="data.imgUrl + '?param=180y180'">
     </div>
     <!-- 歌单名 -->

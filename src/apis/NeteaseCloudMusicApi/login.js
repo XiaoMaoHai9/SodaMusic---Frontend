@@ -15,17 +15,17 @@ const loginByPhone = ({ phone = '', captcha = '' }) => {
   return request.get(`/login/cellphone?phone=${phone}&captcha=${captcha}`)
 }
 
-// 手机号、验证码登录
+// 手机号、密码登录
 const loginByPwd = ({ phone = '', password = '' }) => {
   return request.get(`/login/cellphone?phone=${phone}&password=${password}`)
 }
 
-// 手机号、验证码登录
+// 获取用户信息
 const getUserInfo = ({ uid = '' }) => {
   return request.get(`/user/detail?uid=${uid}`)
 }
 
-// 手机号、验证码登录
+// 退出登录
 const logout = () => {
   return request.get('/logout')
 }

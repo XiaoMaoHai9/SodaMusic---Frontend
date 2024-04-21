@@ -138,7 +138,7 @@ export default {
           if (this.$route.path !== '/myMicLib/libIndex') {
             this.$router.push('/myMicLib')
           }
-          this.$message.success('登录成功！欢迎  ' + res.username)
+          this.$message.success('登录成功！欢迎  ' + res.user_name)
         })
       } else {
         // 判断三方平台登录模式 -> 手机号登录

@@ -4,8 +4,6 @@
     <div class="box box-2 br bs"></div>
     <div class="box box-3 br bs"></div>
     <div class="box box-4 br bs"></div>
-    <div class="box box-4 br bs"></div>
-    <div class="box box-4 br bs"></div>
   </div>
 </template>
 

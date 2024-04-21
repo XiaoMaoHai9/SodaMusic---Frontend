@@ -8,7 +8,10 @@
     <div class="new-album-outer" v-if="data != []">
       <div class="new-ablum-inner"  :style="{ left: left + 'px'}">
         <ul class="new-album-list" v-for="(item, index) in data" :key="index">
-          <new-album-item v-for="value in item.info" :key="value.id" :data="value"></new-album-item>
+          <new-album-item v-for="value in item.info" :key="value.id" :data="value">
+            <a-icon class="tools-icon" type="star" :style="{fontSize: '25px'}"/>
+            <a-icon class="tools-icon" type="cloud-download" :style="{fontSize: '25px', margin: '0 15px'} "/>
+          </new-album-item>
         </ul>
       </div>
     </div>

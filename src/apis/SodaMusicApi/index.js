@@ -1,16 +1,16 @@
 import request from '@/utils/axios/request-sodamusic'
 
 const register = ({ phone = '', username = '', password = '', avatar = '' }) => {
-  return request.post('/api/register', {
+  return request.post('/account/register', {
     phone,
-    username,
+    user_name: username,
     password,
     avatar
   })
 }
 
 const login = ({ phone = '', password = '' }) => {
-  return request.post('/api/login', {
+  return request.post('/account/login', {
     phone,
     password
   })
