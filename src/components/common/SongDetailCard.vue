@@ -7,10 +7,10 @@
       <div class="detail-content-area">
         <div class="content-item">歌名： {{ data.song_name }}</div>
         <div class="content-item">歌手： {{ data.singer.join(' / ') }}</div>
-        <div class="content-item">歌曲时长： {{ data.song_time }}</div>
+        <div class="content-item">歌曲时长： {{ data.duration }}</div>
         <div class="content-item">语言： {{ data.language }}</div>
         <div class="content-item">风格： {{ data.style_name.join(' / ') }}</div>
-        <div class="content-item">添加时间： {{ data.add_date }}</div>
+        <div class="content-item">添加时间： {{ new Date(data.add_date).toLocaleString() }}</div>
       </div>
     </div>
   </template>

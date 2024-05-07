@@ -17,11 +17,11 @@
           list-type="picture-card"
           class="avatar-uploader"
           :show-upload-list="false"
-          action=""
+          action="http://localhost:3000/upload/avatar"
           :before-upload="beforeUpload"
           @change="handleChange"
         >
-        <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+        <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width: 100%"/>
           <div v-else>
             <a-icon :type="loading ? 'loading' : 'plus'" />
             <div class="ant-upload-text">
@@ -58,7 +58,7 @@ export default {
   data () {
     return {
       regForm: {
-        avatar: '', // 头像
+        avatarUrl: 'src\\db\\images\\avatar\\1714549641203.png', // 头像
         username: 'pu_-', // 用户名
         phone: '17364493915', // 手机号
         password: '111111ACc', // 密码
@@ -142,6 +142,11 @@ export default {
           this.imageUrl = imageUrl
           this.loading = false
         })
+
+        if (info.file.response.code === 200) {
+          this.$message.success(info.file.response.msg)
+          this.regForm.avatarUrl = info.file.response.data.avatar_url
+        }
       }
     },
 
@@ -254,5 +259,19 @@ export default {
       cursor: pointer;
     }
   }
+}
+</style>
+<style>
+.ant-upload.ant-upload-select-picture-card{
+  border: 2px dashed #d9d9d9 !important;
+  background-color: #fff !important;
+}
+
+.ant-upload.ant-upload-select-picture-card {
+  overflow: hidden;
+}
+
+.ant-upload.ant-upload-select-picture-card > .ant-upload{
+  padding: 0 !important;
 }
 </style>

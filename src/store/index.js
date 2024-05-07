@@ -11,9 +11,7 @@ export default new Vuex.Store({
     sodaAccount: { // soda 账户
       loginFlag: false,
       isLogin: false, // 登陆状态
-      userInfo: { // 用户数据
-        avatarUrl: ''
-      }
+      userInfo: {} // 用户数据
     },
     thirdParty: { // 第三方账户
       isLogin: false, // 登陆状态

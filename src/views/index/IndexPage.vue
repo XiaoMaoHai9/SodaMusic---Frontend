@@ -12,11 +12,11 @@
         </li>
         <li>
           <search-bar></search-bar>
-          <a-button type="primary" size="large" :style="{ width: '80px', fontSize: '15px', verticalAlign: 'middle'}" @click="loginFlag = true" v-if="!thirdParty.isLogin">登录</a-button>
-          <a-popover trigger="hover">
+          <a-button type="primary" size="large" :style="{ width: '80px', fontSize: '15px', verticalAlign: 'middle'}" @click="loginFlag = true" v-if="!thirdParty.isLogin && !sodaAccount.isLogin">登录</a-button>
+          <a-popover>
             <template slot="content">
               <ul class="bannner-popover-ul">
-                <li class="br">
+                <li class="br" @click="loginFlag = true">
                   <span>
                     <a-icon type="api" :style="{ marginRight: '7px'}"/>切换接口</span>
                 </li>
@@ -26,7 +26,10 @@
                 </li>
               </ul>
             </template>
-            <a-avatar :size="40" :src="thirdParty.userInfo.avatarUrl" v-show="thirdParty.isLogin"/>
+            <span class="avatar-container" @click="clickAvatar">
+              <a-avatar class="tran-03s" style="z-index: 2" :size="40" :src="thirdParty.userInfo.avatarUrl || sodaAccount.userInfo.avatar_url" v-if="thirdParty.isLogin || sodaAccount.isLogin"/>
+            <a-avatar class="tran-03s" style="left: -25px; z-index: 1" :size="40" :src="sodaAccount.userInfo.avatar_url" v-if="thirdParty.isLogin && sodaAccount.isLogin"/>
+            </span>
           </a-popover>
         </li>
       </ul>
@@ -131,7 +134,8 @@ export default {
     return {
       keepArr: ['FoundMusic', 'MusicLibPage'],
       loginFlag: false,
-      registerFlag: false
+      registerFlag: false,
+      avatarMoveFlag: false
     }
   },
   computed: {
@@ -218,6 +222,25 @@ export default {
     goNewWindow (value) {
       this.loginFlag = value === 'login'
       this.registerFlag = value === 'register'
+    },
+
+    // 头像点击 -> 点击第二个 -> 两个头像位置互换
+    clickAvatar () {
+      if (this.thirdParty.isLogin && this.sodaAccount.isLogin) {
+        const frontIndex = this.avatarMoveFlag ? 1 : 0
+        const backIndex = this.avatarMoveFlag ? 0 : 1
+        const avatarList = document.querySelectorAll('.ant-avatar')
+        // 前 -> 后
+        const currentLeftBack = parseFloat(this.getStyle(avatarList[frontIndex], 'left'))
+        avatarList[frontIndex].style.left = `${currentLeftBack + 15}px`
+        avatarList[frontIndex].style.zIndex = 1
+        // 后 -> 前
+        const currentLeftFront = parseFloat(this.getStyle(avatarList[backIndex], 'left'))
+        avatarList[backIndex].style.left = `${currentLeftFront - 15}px`
+        avatarList[backIndex].style.zIndex = 2
+
+        this.avatarMoveFlag = !this.avatarMoveFlag
+      }
     }
   },
   created () {
@@ -339,14 +362,14 @@ export default {
   background-color: #f2f2f2;
 
   .footer-content{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    width: 1000px;
-    height: 500px;
-    margin: 0 auto;
-    padding: 100px;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: space-evenly;
+   align-items: center;
+   width: 1000px;
+   height: 500px;
+   margin: 0 auto;
 
     .footer-info{
       width: 140px;
@@ -399,5 +422,19 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="less" scoped>
+.ant-avatar{
+  position: relative;
+  border: 1px solid @color-grey;
+}
+
+.avatar-container{
+    display: inline-block;
+    max-width: 55px;
+    height: 40px;
+    line-height: 40px;
+    white-space: nowrap;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="album-iten bs">
-    <div class="album-cover-container br" @click="playAlbum({id: data.id})">
+    <div class="album-cover-container br" @click="playAlbum(data.sid || data.id)">
       <div class="cover-mask mask-style-b">
         <a-icon type="play-circle" class="play-icon" title="播放" theme="filled"/>
       </div>
@@ -61,8 +61,12 @@ export default {
     border: 1px solid @color-grey;
     overflow: hidden;
     cursor: pointer;
-
     .lazy-img-container-mixins(90px, 90px);
+
+    .album-cover{
+      width: 100%;
+      height: 100%;
+    }
 
     .cover-mask{
       position: absolute;

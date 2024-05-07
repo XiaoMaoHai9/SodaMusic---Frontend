@@ -39,7 +39,7 @@ instance.interceptors.response.use(function (response) {
   return Promise.reject(error)
 })
 
-const ajaxMethod = ['get', 'post']
+const ajaxMethod = ['get', 'post', 'delete']
 const request = {}
 ajaxMethod.forEach(method => {
   // 数组取值的两种方式
