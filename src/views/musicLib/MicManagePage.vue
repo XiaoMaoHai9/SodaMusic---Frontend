@@ -15,13 +15,13 @@
       <a-button :style="{width: '90px', marginRight: '15px'}" type="primary" size="large">搜索</a-button>
       <a-button class="upload-btn" type="primary" size="large" @click="showCard({type: 'update'})" title="点击上传"><a-icon type="upload"/> 歌曲上传 </a-button>
     </div>
-    <new-album-item class="album-item" v-for="item in libList" :data="item" :cardMode="cardMode" :key="item.sid">
+    <new-album-item class="album-item" v-for="item in libList.songList[libList.pageNow - 1]" :data="item" :cardMode="cardMode" :key="item.sid">
       <a-icon class="tools-icon" type="info-circle" :style="{fontSize: '25px'}" title="详情" @click="showCard({ sid: item.sid, type: 'detail'})"/>
       <a-icon class="tools-icon" type="edit" :style="{fontSize: '25px', marginLeft: '15px'}" @click="showCard({ sid: item.sid, type: 'edit'})" title="编辑"/>
       <a-icon class="tools-icon" type="cloud-download" :style="{fontSize: '25px', marginLeft: '15px'}" title="下载" @click="downloadFile(item)"/>
       <a-icon class="tools-icon" type="delete" :style="{fontSize: '25px', margin: '0 30px 0 15px'}" title="删除" @click="showConfirm({lid: $store.state.sodaAccount.userInfo.lid, sid: item.sid})"/>
     </new-album-item>
-    <a-pagination class="pagination" v-model="current" :total="50" show-less-items />
+    <a-pagination class="pagination" v-model="libList.pageNow" :pageSize="libList.pageSize" hideOnSinglePage :total="libList.songNum"/>
     <transition name="mask-fade">
       <song-detail-card v-if="detailFlag" @closeWindow="closeWindow()" :data="nowDetail"></song-detail-card>
     </transition>
@@ -44,7 +44,13 @@ export default {
   name: 'MicManagePage',
   data () {
     return {
-      libList: [],
+      libList: {
+        pageNow: 1, // 当前页数
+        pageSum: 10, // 总页数
+        pageSize: 5, // 每页数量
+        songNum: 50, // 总数量
+        songList: [] // 歌曲列表
+      },
       nowDetail: '',
       searchInfo: {
         song: '',
@@ -54,29 +60,31 @@ export default {
       },
       detailFlag: false,
       editFlag: false,
-      cardMode: '',
-      pageSize: 20,
-      current: 4
+      cardMode: ''
     }
   },
 
   watch: {
-    pageSize (val) {
+    'libList.pageSize' (val) {
       console.log('pageSize', val)
     },
-    current (val) {
+    'libList.pageNow' (val) {
       console.log('current', val)
     }
   },
   methods: {
-    onShowSizeChange (current, pageSize) {
-      console.log(current, pageSize)
-    },
-
     // 获取乐库列表
     async getLibList () {
       const { data } = await this.$http.sodamusicApi.getSongLib(this.$store.state.sodaAccount.userInfo.lid)
-      this.libList = data.data
+      this.libList.songNum = data.data.length
+      data.data.forEach((item, index) => {
+        const page = Math.floor(index / 5)
+        if (!this.libList.songList[page]) {
+          this.libList.songList[page] = []
+        }
+        this.libList.songList[page].push(item)
+      })
+      this.libList.pageSum = this.libList.songList.length
     },
 
     // 详情展示
