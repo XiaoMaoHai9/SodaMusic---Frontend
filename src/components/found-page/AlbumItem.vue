@@ -33,6 +33,27 @@ export default {
 
     // 播放专辑
     async playAlbum (info) {
+      if (this.$store.state.sodaAccount.isLogin && this.$route.fullPath === '/myMicLib/micMangage') {
+        // 检查播放列表是否已存在该歌曲
+        const { isHas, arrIndex } = this.$store.getters.songIsExist(info)
+        // 如果该歌曲已在播放列表
+        if (isHas) {
+          // 如果歌曲已在末尾
+          if (arrIndex === this.$store.state.audioPlayer.songsList.length - 1) {
+          // 重新播放
+            this.$store.commit('changePlayNow', 'replay')
+            return
+          }
+          // 歌曲置尾
+          this.$store.commit('endSong', arrIndex)
+          // 切歌
+          this.$store.commit('changePlayNow', 'end')
+          return
+        }
+
+        this.$store.dispatch('playSong', this.data)
+        return
+      }
       // 获取歌曲详情
       this.$store.dispatch('getAlbumAllSongs', info)
     }

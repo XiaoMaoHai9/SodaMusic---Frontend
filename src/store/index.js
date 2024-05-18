@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { checkMusic, getSong, getSongDetail, getPlayListAllSongs, getAlbumInfo, getMvUrl } from '@/apis/NeteaseCloudMusicApi/music'
 import { cleanSongForWY } from '@/utils/index/formant-data-wy'
+import { cleanSongForSoda } from '@/utils/index/formant-data-soda'
 
 Vue.use(Vuex)
 
@@ -281,7 +282,8 @@ export default new Vuex.Store({
     },
 
     // 获取专辑内容
-    async getAlbumAllSongs (context, { id }) {
+    async getAlbumAllSongs (context, id) {
+      console.log(id)
       const { data } = await getAlbumInfo(id)
       // 清洗歌曲数据
       const songsDetial = data.songs.map(item => cleanSongForWY(item))
@@ -317,8 +319,20 @@ export default new Vuex.Store({
       context.state.videoPlayer.id = data.data.id
       context.state.videoPlayer.url = data.data.url
       context.commit('changeVideoState', true)
+    },
+
+    // 乐库管理 -> 注入歌曲到播放器
+    playSong (context, info) {
+      // 单曲注入播放器
+      context.state.audioPlayer.songsList.push(cleanSongForSoda(info))
+      // 如果播放器已启动
+      if (context.state.audioPlayer.isStart) {
+        // 切歌
+        context.commit('changePlayNow', 'end')
+      } else {
+        // 启动播放器
+        context.commit('changeIsStart', true)
+      }
     }
-  },
-  modules: {
   }
 })

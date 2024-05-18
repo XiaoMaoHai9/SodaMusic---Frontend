@@ -12,7 +12,7 @@
       <a-input class="input-search" name="search-lang" size="large" :allowClear="true" placeholder="歌曲语言" v-model="searchInfo.lang" autocomplete="off"/>
     </div>
     <div class="btn-area">
-      <a-button :style="{width: '90px', marginRight: '15px'}" type="primary" size="large">搜索</a-button>
+      <a-button :style="{width: '90px', marginRight: '15px'}" type="primary" size="large" @click="goSearch">搜索</a-button>
       <a-button class="upload-btn" type="primary" size="large" @click="showCard({type: 'update'})" title="点击上传"><a-icon type="upload"/> 歌曲上传 </a-button>
     </div>
     <new-album-item class="album-item" v-for="item in libList.songList[libList.pageNow - 1]" :data="item" :cardMode="cardMode" :key="item.sid">
@@ -53,6 +53,7 @@ export default {
       },
       nowDetail: '',
       searchInfo: {
+        lid: '',
         song: '',
         singer: '',
         style: '',
@@ -76,6 +77,7 @@ export default {
     // 获取乐库列表
     async getLibList () {
       const { data } = await this.$http.sodamusicApi.getSongLib(this.$store.state.sodaAccount.userInfo.lid)
+      this.libList.songList = []
       this.libList.songNum = data.data.length
       data.data.forEach((item, index) => {
         const page = Math.floor(index / 5)
@@ -95,8 +97,12 @@ export default {
         return
       }
 
-      this.libList.forEach(item => {
-        if (item.sid === sid) this.nowDetail = item
+      this.libList.songList.forEach(item => {
+        item.forEach(i => {
+          if (i.sid === sid) {
+            this.nowDetail = i
+          }
+        })
       })
 
       if (type === 'detail') this.detailFlag = true
@@ -171,6 +177,29 @@ export default {
       if (this.detailFlag) this.detailFlag = false
       // 关闭编辑窗口
       if (this.editFlag) this.editFlag = false
+    },
+
+    // 条件搜索
+    async goSearch () {
+      const { data } = await this.$http.sodamusicApi.searchList({
+        lid: this.$store.state.sodaAccount.userInfo.lid,
+        song: this.searchInfo.song,
+        singer: this.searchInfo.singer === '' ? this.searchInfo.singer : JSON.stringify(this.searchInfo.singer.split(',')),
+        lang: this.searchInfo.lang,
+        style: this.searchInfo.style === '' ? this.searchInfo.style : JSON.stringify(this.searchInfo.style.split(','))
+      })
+      if (data.code === 400) return this.$message.warn(data.msg)
+      this.libList.songList = []
+      this.libList.songNum = data.data.length
+      data.data.forEach((item, index) => {
+        const page = Math.floor(index / 5)
+        if (!this.libList.songList[page]) {
+          this.libList.songList[page] = []
+        }
+        this.libList.songList[page].push(item)
+      })
+      this.libList.pageSum = this.libList.songList.length
+      this.$message.success(data.msg)
     }
   },
   created () {

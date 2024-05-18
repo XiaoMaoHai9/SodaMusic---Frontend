@@ -60,9 +60,9 @@ export default {
       regForm: {
         avatarUrl: 'src\\db\\images\\avatar\\1714549641203.png', // 头像
         username: 'pu_-', // 用户名
-        phone: '17364493915', // 手机号
-        password: '111111ACc', // 密码
-        rePassword: '111111ACc' // 再次密码
+        phone: '', // 手机号
+        password: '', // 密码
+        rePassword: '' // 再次密码
       },
       loading: false,
       imageUrl: ''

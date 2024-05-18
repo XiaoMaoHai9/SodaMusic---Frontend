@@ -41,9 +41,9 @@ export default {
   data () {
     return {
       loginForm: {
-        phone: '15375692553', // 手机号
+        phone: '', // 手机号
         captcha: '', // 短信验证码
-        password: 'GototheMars2001W' // 密码
+        password: '' // 密码
       },
       codeCountdown: 60,
       countFlag: false,

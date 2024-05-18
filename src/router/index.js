@@ -21,7 +21,7 @@ const routes = [
   {
     name: 'MusicLibPage',
     path: '/myMicLib',
-    redirect: '/myMicLib/libIndex',
+    redirect: '/myMicLib/micMangage',
     // 路由懒加载 -> 分块为 group-lib
     component: () => import(/* webpackChunkName: "group-lib" */'@/views/index/MyMusicLibPage.vue'),
     meta: {

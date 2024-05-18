@@ -231,7 +231,7 @@ export default {
           console.log(error)
         })
       } else if (typeTitle === '热碟推荐' || typeTitle === '新碟首发') {
-        this.getAlbumAllSongs({ id: id })
+        this.getAlbumAllSongs(id)
       } else if (typeTitle === '歌单推荐') {
         this.getListAllSongs({ id: id })
       } else if (typeTitle === '独家策划') {

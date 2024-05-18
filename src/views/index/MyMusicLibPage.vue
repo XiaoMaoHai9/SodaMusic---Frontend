@@ -8,16 +8,16 @@
         @click="handleClick"
         :inline-collapsed="collapsed"
       >
-        <a-menu-item key="1" @titleClick="titleClick">
+        <!-- <a-menu-item key="1" @titleClick="titleClick">
           <a-icon type="home" /><span>首页</span>
-        </a-menu-item>
-        <a-menu-item key="2" @titleClick="titleClick">
+        </a-menu-item> -->
+        <a-menu-item key="1" @titleClick="titleClick">
           <a-icon type="folder" /><span>歌曲管理</span>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="2">
           <a-icon type="setting" /><span>设置</span>
         </a-menu-item>
-        <a-menu-item key="4" @click="confirm">
+        <a-menu-item key="3" @click="confirm">
           <a-icon type="logout" /><span>退出</span>
         </a-menu-item>
       </a-menu>
@@ -34,7 +34,7 @@ export default {
   name: 'MusicLibPage',
   data () {
     return {
-      keepArr: ['LibIndexPage', 'MicManagePage', 'SettingPage'],
+      keepArr: ['MicManagePage', 'SettingPage'],
       current: ['mail'],
       openKeys: ['sub1'],
       collapsed: false,
@@ -50,16 +50,17 @@ export default {
     ...mapMutations(['logout']),
 
     handleClick (e) {
+      // if (e.key === '1') {
+      // this.$router.push('/myMicLib')
+      //  }
       if (e.key === '1') {
-        this.$router.push('/myMicLib')
-      } else if (e.key === '2') {
         this.$router.push('/myMicLib/micMangage')
-      } else if (e.key === '3') {
+      } else if (e.key === '2') {
         this.$router.push('/myMicLib/setting')
-      } else if (e.key === '4') {
-        if (this.$route.path === '/myMicLib/libIndex') e.key = '1'
-        if (this.$route.path === '/myMicLib/micMangage') e.key = '2'
-        if (this.$route.path === '/myMicLib/setting') e.key = '3'
+      } else if (e.key === '3') {
+        // if (this.$route.path === '/myMicLib/libIndex') e.key = '1'
+        if (this.$route.path === '/myMicLib/micMangage') e.key = '1'
+        if (this.$route.path === '/myMicLib/setting') e.key = '2'
       }
     },
     titleClick (e) {
@@ -98,7 +99,7 @@ export default {
     }
   },
   created () {
-    if (this.$route.path !== '/myMicLib/libIndex') this.$router.push('/myMicLib/libIndex')
+    if (this.$route.path !== '/myMicLib/micMangage') this.$router.push('/myMicLib')
   },
   mounted () {
     const mediaList = window.matchMedia('(max-width: 768px)')

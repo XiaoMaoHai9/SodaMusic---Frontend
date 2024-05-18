@@ -5,33 +5,88 @@
       <span class="setting-title">账号设置</span>
       <div class="input-block">
         <span class="input-title">用户名</span>
-        <a-input size="large" placeholder="请输入新用户名" v-model="loginForm.username"/>
+        <a-input size="large" placeholder="请输入新用户名" v-model="userForm.username"/>
       </div>
       <div class="input-block">
         <span class="input-title">手机号</span>
-        <a-input size="large" placeholder="请输入新手机号" v-model="loginForm.phone"/>
+        <a-input size="large" placeholder="请输入新手机号" v-model="userForm.phone"/>
       </div>
       <div class="input-block">
         <span class="input-title">密码</span>
-        <a-input-password size="large" placeholder="请输入新密码" v-model="loginForm.password"/>
+        <a-input-password size="large" placeholder="请输入新密码" v-model="userForm.password"/>
       </div>
       <div class="button-block">
-        <a-button class="submit" type="primary" size="large" style="width: 45%">提交</a-button>
-        <a-button class="reset" type="primary"  size="large" style="width: 45%; background-color: #e74032; border-color: #a72d24;">重置</a-button>
+        <a-button class="submit" type="primary" size="large" style="width: 45%" @click="submitForm">提交</a-button>
+        <a-button class="reset" type="primary"  size="large" style="width: 45%; background-color: #e74032; border-color: #a72d24;" @click="clearForm">重置</a-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { chechUname, checkPhone, checkPwd } from '@/utils/check-data'
 export default {
   name: 'SettingPage',
   data () {
     return {
-      loginForm: {
-        username: 'pu-_', // 用户名
-        phone: '15375692553', // 手机号
-        password: 'GototheMars2001W' // 密码
+      userForm: {
+        lid: '',
+        username: '', // 用户名
+        phone: '', // 手机号
+        password: '' // 密码
+      }
+    }
+  },
+  methods: {
+    async submitForm () {
+      if (this.userForm.username === '' && this.userForm.phone === '' && this.userForm.password === '') return this.$message.warn('请输入修改内容 ！')
+
+      // 用户名格式验证
+      if (this.userForm.username !== '') {
+        const checkUnameRes = chechUname(this.userForm.username)
+        if (!checkUnameRes.bool) {
+          this.$message.error(checkUnameRes.msg)
+          return
+        }
+      }
+
+      // 手机号格式验证
+      if (this.userForm.phone !== '') {
+        const checkPhoneRes = checkPhone(this.userForm.phone)
+        if (!checkPhoneRes.bool) {
+          this.$message.error(checkPhoneRes.msg)
+          return
+        }
+      }
+
+      if (this.userForm.password !== '') {
+      // 密码格式验证
+        const checkPwdRes = checkPwd(this.userForm.password)
+        if (!checkPwdRes.bool) {
+          this.$message.error(checkPwdRes.msg)
+          return
+        }
+      }
+
+      const { data } = await this.$http.sodamusicApi.updateUserInfo({
+        lid: this.$store.state.sodaAccount.userInfo.lid,
+        user_name: this.userForm.username, // 用户名
+        phone: this.userForm.phone, // 手机号
+        password: this.userForm.password // 密码
+      })
+
+      if (data.code === 200) {
+        this.clearForm()
+        return this.$message.success(data.msg)
+      }
+
+      this.$message.error(data.msg)
+    },
+    clearForm () {
+      this.userForm = {
+        username: '', // 用户名
+        phone: '', // 手机号
+        password: '' // 密码
       }
     }
   }

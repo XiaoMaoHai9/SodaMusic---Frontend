@@ -31,7 +31,7 @@ if (window.localStorage.userInfo_sodamusic) {
 
 // 路由全局前置守卫 -> 进行路由拦截
 router.beforeEach((to, from, next) => {
-  if (to.name === 'LibIndexPage' && !store.state.sodaAccount.isLogin) {
+  if (to.name === 'MicManagePage' && !store.state.sodaAccount.isLogin) {
     next({ path: '/found' })
     // 开启登录窗口
     store.commit('changeLoginFlag', true)

@@ -28,19 +28,29 @@ const uploadSong = (info) => {
   return request.post('/song/set', info)
 }
 
-// 歌曲上传
+// 获取歌曲列表
 const getSongLib = (lid = '') => {
   return request.get(`/song/songlib?lid=${lid}`)
 }
 
-// 歌曲上传
+// 歌曲修改
 const modifySongDetail = (modifyInfo) => {
   return request.post('/song/modify', modifyInfo)
 }
 
-// 歌曲上传
+// 歌曲删除
 const deleteSong = ({ lid, sid }) => {
   return request.delete(`/song/delete?lid=${lid}&sid=${sid}`)
+}
+
+// 歌曲删除
+const searchList = ({ lid, song, singer, style, lang }) => {
+  return request.post(`/song/search?lid=${lid}&song_name=${song}&singer=${singer}&style_name=${style}&language=${lang}`)
+}
+
+// 用户信息修改
+const updateUserInfo = (userInfo) => {
+  return request.post('/my/update', userInfo)
 }
 
 export {
@@ -50,5 +60,7 @@ export {
   uploadSong,
   getSongLib,
   modifySongDetail,
-  deleteSong
+  deleteSong,
+  searchList,
+  updateUserInfo
 }

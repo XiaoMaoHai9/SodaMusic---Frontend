@@ -115,7 +115,7 @@ export default {
     'audioPlayer.isToggle' (newValue) {
       if (newValue) {
         // 当前歌曲无 url， 发送请求获取url
-        if (!this.audioPlayer.songsList[this.audioPlayer.playNow].url) {
+        if (!this.audioPlayer.songsList[this.audioPlayer.playNow].audioUrl || !this.audioPlayer.songsList[this.audioPlayer.playNow].url) {
           this.getSong({ info: this.audioPlayer.songsList[this.audioPlayer.playNow], flag: 'play' }).then(() => {
             // 样式复位
             this.playerStyleReset()

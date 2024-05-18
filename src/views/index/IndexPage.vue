@@ -144,12 +144,12 @@ export default {
   watch: {
     // 监听路由跳转
     $route (to, from) {
-      if (from.path === '/' && to.path === '/myMicLib/libIndex') {
+      if (from.path === '/' && to.path === '/myMicLib/micMangage') {
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
         this.$refs.topNavLib.style.color = '#0075c2'
       } else if (from.path === '/' && to.path === '/found') {
         this.$refs.topNavFound.style.color = '#0075c2'
-      } else if (from.path === '/found' && to.path === '/myMicLib/libIndex') {
+      } else if (from.path === '/found' && to.path === '/myMicLib/micMangage') {
         // 改变导航条位置
         this.$refs.topNav.style.backgroundPositionX = parseFloat(this.getStyle(this.$refs.topNav, 'backgroundPositionX')) + 120 + 'px'
         this.$refs.topNavFound.style.color = 'rgba(0, 0, 0, 0.65)'
