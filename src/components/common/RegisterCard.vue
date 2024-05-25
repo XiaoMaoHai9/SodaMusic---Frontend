@@ -59,7 +59,7 @@ export default {
     return {
       regForm: {
         avatarUrl: 'src\\db\\images\\avatar\\1714549641203.png', // 头像
-        username: 'pu_-', // 用户名
+        username: '', // 用户名
         phone: '', // 手机号
         password: '', // 密码
         rePassword: '' // 再次密码
